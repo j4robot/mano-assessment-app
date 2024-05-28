@@ -24,10 +24,6 @@ export const Product = ({ navigation }: {navigation: any}) => {
         })
     }, [])
 
-    const addProductToCart = () => {
-        Alert.alert('Success', 'The product has been added to your cart')
-    }
-
     return (
         <>
             <SafeAreaView>
