@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ScrollView, Image, Text, Button, Modal, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { ProductItemDto } from '../../api/models/product';
+import { getProductById } from '../../api/product';
 
 export const ProductDetails = ({ navigation, route }: { navigation: any, route: any }) => {
     const [showModal, setShowModal] = useState(false);
 
-    const { id, title, price, images } = route.params as ProductItemDto;
+    const { id} = route.params as ProductItemDto;
+    const [product, setProduct] = useState<ProductItemDto>();
+
+    useEffect(() => {
+        getProductById(id).then(prod => setProduct(prod));
+    }, [setProduct])
 
     const openModal = () => {
         setShowModal(true)
@@ -20,7 +26,7 @@ export const ProductDetails = ({ navigation, route }: { navigation: any, route: 
         <ScrollView style={styles.container}>
 
             <TouchableOpacity onPress={openModal}>
-                <Image style={styles.image} source={{ uri: images[0].large }} />
+                <Image style={styles.image} source={{ uri: product?.images[0].large }} />
             </TouchableOpacity>
 
             <Modal
@@ -29,13 +35,13 @@ export const ProductDetails = ({ navigation, route }: { navigation: any, route: 
                 transparent={true}
                 onRequestClose={() => setShowModal(false)}>
                 <TouchableWithoutFeedback onPress={closeModal}>
-                    <ImageViewer imageUrls={[{ url: images[0].large }]} />
+                    <ImageViewer imageUrls={[{ url: product?.images[0].large || '' }]} />
                 </TouchableWithoutFeedback>
             </Modal>
 
             <View style={styles.info}>
-                <Text style={styles.name}>{title}</Text>
-                <Text style={styles.price}>₦{price}</Text>
+                <Text style={styles.name}>{product?.title}</Text>
+                <Text style={styles.price}>₦{product?.price}</Text>
                 <Text style={styles.description}>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                 </Text>
