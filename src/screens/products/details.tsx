@@ -1,16 +1,38 @@
-import React from 'react';
-import { View, ScrollView, Image, Text, Button } from 'react-native';
+import React, { useState } from 'react';
+import { View, ScrollView, Image, Text, Button, Modal, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import ImageViewer from 'react-native-image-zoom-viewer';
 import { ProductItemDto } from '../../api/models/product';
 
-export const ProductDetails = ({navigation, route}: {navigation: any, route: any}) => {
+export const ProductDetails = ({ navigation, route }: { navigation: any, route: any }) => {
+    const [showModal, setShowModal] = useState(false);
 
-    const {id, title, price,images} = route.params as ProductItemDto;
+    const { id, title, price, images } = route.params as ProductItemDto;
 
-    console.log({id, title, price,images})
+    const openModal = () => {
+        setShowModal(true)
+    }
+
+    const closeModal = () => {
+        setShowModal(false)
+    }
 
     return (
         <ScrollView style={styles.container}>
-            <Image style={styles.image} source={{ uri: images[0].large }} />
+
+            <TouchableOpacity onPress={openModal}>
+                <Image style={styles.image} source={{ uri: images[0].large }} />
+            </TouchableOpacity>
+
+            <Modal
+                animationType="slide"
+                visible={showModal}
+                transparent={true}
+                onRequestClose={() => setShowModal(false)}>
+                <TouchableWithoutFeedback onPress={closeModal}>
+                    <ImageViewer imageUrls={[{ url: images[0].large }]} />
+                </TouchableWithoutFeedback>
+            </Modal>
+
             <View style={styles.info}>
                 <Text style={styles.name}>{title}</Text>
                 <Text style={styles.price}>₦{price}</Text>
