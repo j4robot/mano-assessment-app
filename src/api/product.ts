@@ -10,6 +10,6 @@ export async function getProducts(): Promise<ProductItemDto[]> {
 }
 
 export async function getProductById(productId: number): Promise<ProductItemDto | undefined> {
-    const product = products.data.items.find(item => item.id == productId)
-    return product;
+    console.log({ppl: products.data.items.find(item => item.id == productId)}, productId)
+    return products.data.items.find(item => item.id == productId)
 }
