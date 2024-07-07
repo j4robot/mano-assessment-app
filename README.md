@@ -3,7 +3,7 @@
 This mobile application is built with expo react-native.
 Also the answers to question 2 and 3 are in the folder with the name "question_2_and_3".
 
-The mobile app took 3 and a half hours to complete.
+The mobile app took 5 and a half hours to complete.
 Question 2 took 10 minutes.
 Question 3 took 15 minutes
 
